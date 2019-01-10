@@ -23,3 +23,18 @@ action "Whitelist deploy branches" {
   args = "branch master develop qa"
 }
 ```
+
+### Slack Notification
+
+Example for sending slack notification. More details in internal [README.md](https://github.com/rtCamp/github-actions-library/blob/master/notification/slack/README.md)
+
+```workflow
+action "Slack Notification" {
+  uses = "rtCamp/github-actions-library/notification/slack@master"
+  env = {
+    SLACK_MESSAGE  = "Deploy success :tada: GitHub Actions :rocket:",
+    SLACK_USERNAME = "notify-bot"
+  }
+  secrets = ["SLACK_WEBHOOK"]
+}
+```
