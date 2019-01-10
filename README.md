@@ -10,11 +10,11 @@ A collection of utilities for running WordPress deployments using GitHub actions
 
 ```
 
-## Actions in the Library and thier usage examples
+## Actions in the Library and their usage examples
 
 ### Branch Filter
 
-Example depicting how mulitple args can sent to filter required branches.
+Example showing how mulitple args can sent to filter required branches and block the rest.
 
 ```workflow
 # Filter for specific deploy branch
