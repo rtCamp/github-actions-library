@@ -26,7 +26,7 @@ action "Whitelist deploy branches" {
 
 ### Slack Notification
 
-Example for sending slack notification. More details in internal [README.md](https://github.com/rtCamp/github-actions-library/blob/master/notification/slack/README.md)
+1. Normal slack notification. More details in internal [README.md](https://github.com/rtCamp/github-actions-library/blob/master/notification/slack/README.md)
 
 ```workflow
 action "Slack Notification" {
@@ -36,5 +36,17 @@ action "Slack Notification" {
     SLACK_USERNAME = "notify-bot"
   }
   secrets = ["SLACK_WEBHOOK"]
+}
+```
+
+2. Slack notification with webhook managed by vault. More details in internal [README.md](https://github.com/rtCamp/github-actions-library/blob/master/notification/vault-slack/README.md)
+```workflow
+action "Slack Notification" {
+  uses = "rtCamp/github-actions-library/notification/vault-slack@master"
+  env = {
+    SLACK_MESSAGE = "Deploy success :tada: GitHub Actions :rocket:",
+    SLACK_USERNAME="notify-bot"
+  }
+  secrets = ["VAULT_URL", "VAULT_TOKEN"]
 }
 ```
