@@ -1,0 +1,1 @@
+FROM mrrobot47/slack-notify@sha256:95ef03cd642334b949d5b9808fe6c46f01fafc074fa7bcc8477c5e8f48aeb703
