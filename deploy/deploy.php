@@ -104,10 +104,10 @@ task('deploy', [
 	'deploy:lock',
 	'deploy:release',
 	'rsync',
-	//'cachetool:download',
+	'cachetool:download',
 	'deploy:symlink',
 	'permissions:set',
-	//'opcache:reset',
+	'opcache:reset',
 	'deploy:unlock',
 	'cleanup'
 ]);
