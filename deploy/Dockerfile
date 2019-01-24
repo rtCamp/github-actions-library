@@ -117,11 +117,6 @@ RUN mkdir -p /composer && \
 COPY composer.* /composer/
 RUN cd /composer && composer install
 
-# Setup deployer
-RUN curl -LO https://deployer.org/deployer.phar && \
-    mv deployer.phar /usr/local/bin/dep && \
-    chmod +x /usr/local/bin/dep
-
 COPY deploy.* /
 COPY hosts.yml /
 RUN chmod +x /deploy.sh
