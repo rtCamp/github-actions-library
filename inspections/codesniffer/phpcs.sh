@@ -13,7 +13,7 @@ function lint_php_files {
 	DIFF_ARGS="$DIFF_BASE...$DIFF_HEAD"
 
 	git diff --diff-filter=AM --no-prefix --unified=0 "$DIFF_ARGS" | \
-		php ./.circleci/parse-diff-ranges.php | \
+		php /parse-diff-ranges.php | \
 		{ grep -E '\.php(:|$)' || true; } > "$TEMP_DIRECTORY/paths-scope-php"
 
 	WPCS_DIR=${WPCS_DIR:-/tmp/wpcs}
@@ -51,3 +51,5 @@ function lint_php_files {
 	rm -rf $TEMP_DIRECTORY
 
 }
+
+lint_php_files

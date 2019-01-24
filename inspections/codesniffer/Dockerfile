@@ -11,8 +11,10 @@ RUN apk update \
 		jq \
 		curl \
 		git \
+        php7 \
     && rm -rf /var/cache/apk/*
 
+COPY parse-diff-ranges.php /
 COPY phpcs.sh /
 RUN chmod +x /phpcs.sh
 
