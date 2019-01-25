@@ -40,6 +40,11 @@ rm -r wp-content/
 
 rsync -av  "$GITHUB_WORKSPACE/" "$HTDOCS/wp-content/"  > /dev/null
 
+# Symlink uploads directory
+cd "$HTDOCS/wp-content/"
+rm -rf uploads
+ln -s ../../../uploads uploads
+
 cd "$GITHUB_WORKSPACE"
 dep deploy "$GITHUB_BRANCH"
 
