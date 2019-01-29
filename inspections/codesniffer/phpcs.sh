@@ -41,7 +41,7 @@ function lint_php_files {
 		if [ ! -s "$TEMP_DIRECTORY/phpcs-report" ]; then
 			return 1
 		else
-			cat "$TEMP_DIRECTORY/phpcs-report" | php ./.circleci/filter-report-for-patch-ranges.php "$TEMP_DIRECTORY/paths-scope-php" | cut -c$( expr ${#PROJECT_ROOT} + 2 )-
+			cat "$TEMP_DIRECTORY/phpcs-report" | php /filter-report-for-patch-ranges.php "$TEMP_DIRECTORY/paths-scope-php" | cut -c$( expr ${#PROJECT_ROOT} + 2 )-
 			phpcs_status="${PIPESTATUS[1]}"
 			if [[ $phpcs_status != 0 ]]; then
 				return $phpcs_status
