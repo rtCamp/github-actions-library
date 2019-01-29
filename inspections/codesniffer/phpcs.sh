@@ -18,7 +18,7 @@ function lint_php_files {
 
 	WPCS_DIR=${WPCS_DIR:-/tmp/wpcs}
 	WPCS_GITHUB_SRC=${WPCS_GITHUB_SRC:-WordPress-Coding-Standards/WordPress-Coding-Standards}
-	WPCS_GIT_TREE=${WPCS_GIT_TREE:-1.2.1}
+	WPCS_GIT_TREE=${WPCS_GIT_TREE:-master}
 	WPCS_STANDARD=${WPCS_STANDARD:-WordPress-Core}
 	WordPressVIPMinimum=${WordPressVIPMinimum:-/tmp/VIP}
 
@@ -27,11 +27,10 @@ function lint_php_files {
 	ln -s ${WordPressVIPMinimum}/WordPressVIPMinimum ${WPCS_DIR}/WordPressVIPMinimum
 	ln -s ${WordPressVIPMinimum}/WordPress-VIP-Go ${WPCS_DIR}/WordPress-VIP-Go
 	pushd "$WPCS_DIR" > /dev/null 2>&1
-	git clone https://github.com/wimg/PHPCompatibility phpcompat > /dev/null 2>&1
-	# ln -s phpcompat/PHPCompatibility PHPCompatibility
+	git clone https://github.com/wimg/PHPCompatibility /tmp/phpcompat > /dev/null 2>&1
 	popd > /dev/null 2>&1
 
-	phpcs --config-set installed_paths "$WPCS_DIR"
+	phpcs --config-set installed_paths "$WPCS_DIR","/tmp/phpcompat/PHPCompatibility"
 	phpcs -i
 	if ! [[ $(cat "$TEMP_DIRECTORY/paths-scope-php") ]]; then
 		echo "No files to process"
