@@ -27,8 +27,8 @@ function lint_php_files {
 	ln -s ${WordPressVIPMinimum}/WordPressVIPMinimum ${WPCS_DIR}/WordPressVIPMinimum
 	ln -s ${WordPressVIPMinimum}/WordPress-VIP-Go ${WPCS_DIR}/WordPress-VIP-Go
 	pushd "$WPCS_DIR" > /dev/null 2>&1
-	git clone https://github.com/wimg/PHPCompatibility /tmp/phpcompat > /dev/null 2>&1
-	ln -s /tmp/phpcompat/PHPCompatibility PHPCompatibility
+	git clone https://github.com/wimg/PHPCompatibility phpcompat > /dev/null 2>&1
+	# ln -s phpcompat/PHPCompatibility PHPCompatibility
 	popd > /dev/null 2>&1
 
 	phpcs --config-set installed_paths "$WPCS_DIR"
