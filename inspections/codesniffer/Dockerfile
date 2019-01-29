@@ -86,13 +86,22 @@ RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/te
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 # Install code sniffer
-RUN pear install pear/PHP_CodeSniffer
+RUN curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar && \
+    mv phpcs.phar /usr/local/bin/phpcs && \
+	chmod +x /usr/local/bin/phpcs
 
-# Checkout Wordpress standards (0.10.0)
-RUN git clone git://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git $(pear config-get php_dir)/PHP/CodeSniffer/Standards/WordPress && \
-    (cd $(pear config-get php_dir)/PHP/CodeSniffer/Standards/WordPress; git checkout tags/0.10.0) && \
-    phpcs --config-set installed_paths $(pear config-get php_dir)/PHP/CodeSniffer/Standards/WordPress && \
-    phpcs --config-set default_standard WordPress
+
+# Setup Wordpress standards
+RUN mkdir -p ~/phpcs && \
+	cd ~/phpcs && \
+	mkdir Coding-Standards && cd $_ && \
+	phpcs_dir=$(pwd) && \
+	git clone -b master https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git wpcs && \
+	git clone -b master https://github.com/Automattic/VIP-Coding-Standards.git && \
+	git clone -b master https://github.com/wimg/PHPCompatibility.git PHPCompatibility && \
+	ln -s "$phpcs_dir/PHPCompatibility/PHPCompatibility" wpcs/PHPCompatibility && \
+	ln -s "$phpcs_dir/VIP-Coding-Standards/WordPressVIPMinimum" wpcs/WordPressVIPMinimum && \
+	phpcs --config-set installed_paths {Paste here again}/wpcs # remember this path
 
 RUN rm -rf /var/cache/apk/*
 
