@@ -14,7 +14,7 @@ RUN apk update \
         php7 \
     && rm -rf /var/cache/apk/*
 
-COPY parse-diff-ranges.php /
+COPY *.php /
 COPY phpcs.sh /
 RUN chmod +x /phpcs.sh
 
