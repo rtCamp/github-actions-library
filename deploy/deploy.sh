@@ -9,6 +9,12 @@ export GITHUB_BRANCH=${GITHUB_REF##*heads/}
 rsync -av "$GITHUB_WORKSPACE/.github/hosts.yml" /hosts.yml
 cat /hosts.yml
 
+# Setup custom deploy.php if found
+custom_deploy_php="$GITHUB_WORKSPACE/.github/deploy.php"
+if [ -f "$custom_deploy_php" ]; then
+    rsync -av "$custom_deploy_php" /deploy.php
+fi
+
 # get hostname
 hostname=$(cat /hosts.yml | shyaml get-value "$GITHUB_BRANCH.hostname")
 
