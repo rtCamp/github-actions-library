@@ -84,6 +84,16 @@ RUN apk update \
 
 RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing gnu-libiconv 
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
+
+# Install code sniffer
+RUN pear install pear/PHP_CodeSniffer
+
+# Checkout Wordpress standards (0.10.0)
+RUN git clone git://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git $(pear config-get php_dir)/PHP/CodeSniffer/Standards/WordPress && \
+    (cd $(pear config-get php_dir)/PHP/CodeSniffer/Standards/WordPress; git checkout tags/0.10.0) && \
+    phpcs --config-set installed_paths $(pear config-get php_dir)/PHP/CodeSniffer/Standards/WordPress && \
+    phpcs --config-set default_standard WordPress
+
 RUN rm -rf /var/cache/apk/*
 
 # Set environments
