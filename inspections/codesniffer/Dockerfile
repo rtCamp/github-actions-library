@@ -101,7 +101,7 @@ RUN mkdir -p ~/phpcs && \
 	git clone -b master https://github.com/wimg/PHPCompatibility.git PHPCompatibility && \
 	ln -s "$phpcs_dir/PHPCompatibility/PHPCompatibility" wpcs/PHPCompatibility && \
 	ln -s "$phpcs_dir/VIP-Coding-Standards/WordPressVIPMinimum" wpcs/WordPressVIPMinimum && \
-	phpcs --config-set installed_paths {Paste here again}/wpcs # remember this path
+	phpcs --config-set installed_paths "$phpcs_dir/wpcs" # remember this path
 
 RUN rm -rf /var/cache/apk/*
 

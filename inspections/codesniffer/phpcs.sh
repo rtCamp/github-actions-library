@@ -16,22 +16,6 @@ function lint_php_files {
 		php /parse-diff-ranges.php | \
 		{ grep -E '\.php(:|$)' || true; } > "$TEMP_DIRECTORY/paths-scope-php"
 
-	WPCS_DIR=${WPCS_DIR:-/tmp/wpcs}
-	WPCS_GITHUB_SRC=${WPCS_GITHUB_SRC:-WordPress-Coding-Standards/WordPress-Coding-Standards}
-	WPCS_GIT_TREE=${WPCS_GIT_TREE:-master}
-	WPCS_STANDARD=${WPCS_STANDARD:-WordPress-Core}
-	WordPressVIPMinimum=${WordPressVIPMinimum:-/tmp/VIP}
-
-	git clone -b "$WPCS_GIT_TREE" "https://github.com/$WPCS_GITHUB_SRC.git" "$WPCS_DIR" > /dev/null 2>&1
-	git clone -b master "https://github.com/Automattic/VIP-Coding-Standards.git" "$WordPressVIPMinimum"
-	ln -s ${WordPressVIPMinimum}/WordPressVIPMinimum ${WPCS_DIR}/WordPressVIPMinimum
-	ln -s ${WordPressVIPMinimum}/WordPress-VIP-Go ${WPCS_DIR}/WordPress-VIP-Go
-	pushd "$WPCS_DIR" > /dev/null 2>&1
-	git clone https://github.com/wimg/PHPCompatibility phpcompat > /dev/null 2>&1
-	ln -s phpcompat/PHPCompatibility PHPCompatibility
-	popd > /dev/null 2>&1
-
-	phpcs --config-set installed_paths "$WPCS_DIR"
 	phpcs -i
 	if ! [[ $(cat "$TEMP_DIRECTORY/paths-scope-php") ]]; then
 		echo "No files to process"
