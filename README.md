@@ -53,10 +53,10 @@ action "Slack Notification" {
 
 ### Inspections
 
-1. PHP Codesniffer inspections. More details in internal [README.md](https://github.com/rtCamp/github-actions-library/blob/develop/inspections/codesniffer/README.md)
+1. PHP Codesniffer inspections. More details in internal [README.md](https://github.com/rtCamp/github-actions-library/blob/master/inspections/codesniffer/README.md)
 
 ```workflow
 action "Run phpcs inspection" {
-  uses = "rtCamp/github-actions-library/inspections/codesniffer@develop"
+  uses = "rtCamp/github-actions-library/inspections/codesniffer@master"
 }
 ```
