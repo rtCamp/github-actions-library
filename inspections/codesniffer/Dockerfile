@@ -90,19 +90,6 @@ RUN curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar && \
     mv phpcs.phar /usr/local/bin/phpcs && \
 	chmod +x /usr/local/bin/phpcs
 
-
-# Setup Wordpress standards
-RUN mkdir -p ~/phpcs && \
-	cd ~/phpcs && \
-	mkdir Coding-Standards && cd $_ && \
-	phpcs_dir=$(pwd) && \
-	git clone -b master https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git wpcs && \
-	git clone -b master https://github.com/Automattic/VIP-Coding-Standards.git && \
-	git clone -b master https://github.com/wimg/PHPCompatibility.git PHPCompatibility && \
-	ln -s "$phpcs_dir/PHPCompatibility/PHPCompatibility" wpcs/PHPCompatibility && \
-	ln -s "$phpcs_dir/VIP-Coding-Standards/WordPressVIPMinimum" wpcs/WordPressVIPMinimum && \
-	phpcs --config-set installed_paths "$phpcs_dir/wpcs" # remember this path
-
 RUN rm -rf /var/cache/apk/*
 
 # Set environments
