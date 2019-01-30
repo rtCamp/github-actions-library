@@ -102,7 +102,7 @@ RUN sed -i "s|;*date.timezone =.*|date.timezone = ${TIMEZONE}|i" "$PHP_INI_DIR" 
 # Update php config
 RUN mkdir -p "/etc/php7/conf.d" && \
 	echo "memory_limit=-1" > "/etc/php7/conf.d/memory-limit.ini" && \
-	echo "date.timezone=Asia/Kolkata" > "/etc/php7/conf.d/date_timezone.ini"
+	echo "date.timezone=${TIMEZONE}" > "/etc/php7/conf.d/date_timezone.ini"
 
 # Setup composer
 RUN mkdir -p /composer && \
