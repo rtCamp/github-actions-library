@@ -39,7 +39,7 @@ action "Slack Notification" {
 }
 ```
 
-2. Slack notification with webhook managed by vault. More details in internal [README.md](https://github.com/rtCamp/github-actions-library/blob/master/notification/vault-slack/README.md)
+2. Slack notification with webhook managed by [vault](https://www.vaultproject.io/). More details in internal [README.md](https://github.com/rtCamp/github-actions-library/blob/master/notification/vault-slack/README.md)
 ```workflow
 action "Slack Notification" {
   uses = "rtCamp/github-actions-library/notification/vault-slack@master"
@@ -68,5 +68,16 @@ action "Run phpcs inspection" {
 ```workflow
 action "White Screen Test" {
   uses = "rtCamp/github-actions-library/test/white-screen@master"
+}
+```
+
+### Deploy
+
+Deployment using [deployer](https://deployer.org/). Deployment general settings like branch and hosts related to the branch etc., are setup in the `hosts.yml` file. The setup of ssh keys for deployment is managed through [vault](https://www.vaultproject.io/). More details in internal [README.md](https://github.com/rtCamp/github-actions-library/blob/master/deploy/README.md)
+
+```workflow
+action "Deploy" {
+  uses = "rtCamp/github-actions-library/deploy@master"
+  secrets = ["VAULT_URL", "VAULT_TOKEN"]
 }
 ```
