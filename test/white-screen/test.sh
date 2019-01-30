@@ -5,7 +5,7 @@ exec /usr/bin/mysqld --user=mysql &
 sleep 5
 
 export PROJECT_ROOT="$(pwd)"
-export HTDOCS="$HOME/htdocs"
+export HTDOCS="$HOME/test"
 export GITHUB_BRANCH=${GITHUB_REF##*heads/}
 
 mkdir -p "$HTDOCS"
@@ -27,7 +27,3 @@ rm -rf "$build_root/wp-content/themes/"{twentyfifteen,twentysixteen,twentysevent
 wp plugin activate --all --allow-root
 wp eval 'echo "wp verify success";' --allow-root
 rm "$build_root/wp-config.php";
-
-pushd "$build_root/wp-content" > /dev/null
-rm -r uploads && ln -sn ../../../uploads
-popd > /dev/null
