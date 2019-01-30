@@ -63,7 +63,7 @@ action "Run phpcs inspection" {
 
 ### Tests
 
-1. White Screen WordPress test. Activates all plugins and runs `wp eval` to check if WordPress is loading properly with the code to be deployed.
+1. :construction: White Screen WordPress test. This test is still under construction to improve proper white screen of death testing. Currently, it activates all plugins and runs `wp eval` to check if WordPress is loading properly with the code to be deployed.
 
 ```workflow
 action "White Screen Test" {
