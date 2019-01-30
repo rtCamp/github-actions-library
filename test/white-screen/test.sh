@@ -7,15 +7,14 @@ sleep 5
 export PROJECT_ROOT="$(pwd)"
 export TEST_HTDOCS="$HOME/test"
 export GITHUB_BRANCH=${GITHUB_REF##*heads/}
+hosts_file="$GITHUB_WORKSPACE/.github/hosts.yml"
 
 mkdir -p "$TEST_HTDOCS"
 cd "$TEST_HTDOCS"
 export build_root="$(pwd)"
 
-#wp_version_file="$PROJECT_ROOT/WP-VERSION.txt"
-#wp core download --version=$([ -s "$wp_version_file" ] && cat "$wp_version_file" || echo 'latest') --allow-root
-
-wp core download --allow-root
+WP_VERSION=$(cat "$hosts_file" | shyaml get-value "$CI_SCRIPT_OPTIONS.wp-version" | tr '[:upper:]' '[:lower:]')
+wp core download --version="$WP_VERSION" --allow-root
 rm -r wp-content/
 
 # Setup WordPress files
