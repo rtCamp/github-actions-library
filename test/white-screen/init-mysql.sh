@@ -13,7 +13,7 @@ if [ ! -d /var/lib/mysql/mysql ]; then
 	mysql_install_db --user=mysql > /dev/null
 
 	# create temp file
-	tfile=`mktemp`
+	tfile=$(mktemp)
 	if [ ! -f "$tfile" ]; then
 	    return 1
 	fi
@@ -25,13 +25,6 @@ FLUSH PRIVILEGES;
 DELETE FROM mysql.user;
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD' WITH GRANT OPTION;
 EOF
-
-
-	# Create new database
-	if [ "$MYSQL_DATABASE" != "" ]; then
-		# Creating database: $MYSQL_DATABASE
-		echo "CREATE DATABASE IF NOT EXISTS \`$MYSQL_DATABASE\` CHARACTER SET utf8 COLLATE utf8_general_ci;" >> $tfile
-	fi
 
 	echo 'FLUSH PRIVILEGES;' >> $tfile
 

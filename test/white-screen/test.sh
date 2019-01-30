@@ -22,6 +22,7 @@ rm -r wp-content/
 rsync -av  "$GITHUB_WORKSPACE/" "$TEST_HTDOCS/wp-content/"  > /dev/null
 
 wp config create --dbname='wp' --dbuser='root' --dbpass='root' --allow-root
+wp db create --allow-root
 wp core install --url=example.com --title=CI --admin_user=ci --admin_password=blahblahblah --admin_email=ci@example.com --allow-root
 rm -rf "$build_root/wp-content/themes/"{twentyfifteen,twentysixteen,twentyseventeen}
 wp plugin activate --all --allow-root
