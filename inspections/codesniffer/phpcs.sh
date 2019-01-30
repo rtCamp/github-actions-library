@@ -8,7 +8,7 @@ function lint_php_files {
 	PROJECT_ROOT="$(git rev-parse --show-toplevel)"
 	TEMP_DIRECTORY=$(mktemp -d 2>/dev/null || mktemp -d -t 'dev-lib')
 
-	DIFF_BASE=${DIFF_BASE:-origin/master}
+	DIFF_BASE="origin/${DIFF_BASE:-master}"
 	DIFF_HEAD=${DIFF_HEAD:-$(git rev-parse HEAD)}
 	DIFF_ARGS="$DIFF_BASE...$DIFF_HEAD"
 
