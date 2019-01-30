@@ -21,11 +21,14 @@ function lint_php_files {
 	WPCS_GIT_TREE=${WPCS_GIT_TREE:-master}
 	WPCS_STANDARD=${WPCS_STANDARD:-WordPress-Core}
 	WordPressVIPMinimum=${WordPressVIPMinimum:-/tmp/VIP}
+	PHPCompatibilityWP="/tmp/PHPCompatibilityWP"
 
 	git clone -b "$WPCS_GIT_TREE" "https://github.com/$WPCS_GITHUB_SRC.git" "$WPCS_DIR" > /dev/null 2>&1
 	git clone -b master "https://github.com/Automattic/VIP-Coding-Standards.git" "$WordPressVIPMinimum"
+	git clone -b master "https://github.com/PHPCompatibility/PHPCompatibilityWP" "$PHPCompatibilityWP"
 	ln -s ${WordPressVIPMinimum}/WordPressVIPMinimum ${WPCS_DIR}/WordPressVIPMinimum
 	ln -s ${WordPressVIPMinimum}/WordPress-VIP-Go ${WPCS_DIR}/WordPress-VIP-Go
+	ln -s ${PHPCompatibilityWP}/PHPCompatibilityWP ${WPCS_DIR}/PHPCompatibilityWP
 	pushd "$WPCS_DIR" > /dev/null 2>&1
 	git clone https://github.com/wimg/PHPCompatibility /tmp/phpcompat > /dev/null 2>&1
 	popd > /dev/null 2>&1
