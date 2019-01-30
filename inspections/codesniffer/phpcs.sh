@@ -16,24 +16,13 @@ function lint_php_files {
 		php /parse-diff-ranges.php | \
 		{ grep -E '\.php(:|$)' || true; } > "$TEMP_DIRECTORY/paths-scope-php"
 
-	WPCS_DIR=${WPCS_DIR:-/tmp/wpcs}
-	WPCS_GITHUB_SRC=${WPCS_GITHUB_SRC:-WordPress-Coding-Standards/WordPress-Coding-Standards}
-	WPCS_GIT_TREE=${WPCS_GIT_TREE:-master}
-	WPCS_STANDARD=${WPCS_STANDARD:-WordPress-Core}
-	WordPressVIPMinimum=${WordPressVIPMinimum:-/tmp/VIP}
-	PHPCompatibilityWP="/tmp/PHPCompatibilityWP"
+	# Setup phpcs WordPress config
+	composer global require dealerdirect/phpcodesniffer-composer-installer \
+	wp-coding-standards/wpcs 1.2.1 \
+	automattic/vipwpcs \
+	phpcompatibility/php-compatibility \
+	phpcompatibility/phpcompatibility-wp:* --update-no-dev
 
-	git clone -b "$WPCS_GIT_TREE" "https://github.com/$WPCS_GITHUB_SRC.git" "$WPCS_DIR" > /dev/null 2>&1
-	git clone -b master "https://github.com/Automattic/VIP-Coding-Standards.git" "$WordPressVIPMinimum"
-	git clone -b master "https://github.com/PHPCompatibility/PHPCompatibilityWP" "$PHPCompatibilityWP"
-	ln -s ${WordPressVIPMinimum}/WordPressVIPMinimum ${WPCS_DIR}/WordPressVIPMinimum
-	ln -s ${WordPressVIPMinimum}/WordPress-VIP-Go ${WPCS_DIR}/WordPress-VIP-Go
-	ln -s ${PHPCompatibilityWP}/PHPCompatibilityWP ${WPCS_DIR}/PHPCompatibilityWP
-	pushd "$WPCS_DIR" > /dev/null 2>&1
-	git clone https://github.com/wimg/PHPCompatibility /tmp/phpcompat > /dev/null 2>&1
-	popd > /dev/null 2>&1
-
-	phpcs --config-set installed_paths "$WPCS_DIR","/tmp/phpcompat/PHPCompatibility"
 	phpcs -i
 	if ! [[ $(cat "$TEMP_DIRECTORY/paths-scope-php") ]]; then
 		echo "No files to process"

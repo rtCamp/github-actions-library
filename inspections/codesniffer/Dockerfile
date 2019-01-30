@@ -86,11 +86,6 @@ RUN apk update \
 RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing gnu-libiconv 
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
-# Install code sniffer
-RUN curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar && \
-    mv phpcs.phar /usr/local/bin/phpcs && \
-	chmod +x /usr/local/bin/phpcs
-
 RUN rm -rf /var/cache/apk/*
 
 # Set environments
@@ -105,6 +100,11 @@ RUN sed -i "s|;*date.timezone =.*|date.timezone = ${TIMEZONE}|i" "$PHP_INI_DIR" 
 RUN mkdir -p "/etc/php7/conf.d" && \
     echo "memory_limit=-1" > "/etc/php7/conf.d/memory-limit.ini" && \
     echo "date.timezone=Asia/Kolkata" > "/etc/php7/conf.d/date_timezone.ini"
+
+# Setup composer
+RUN mkdir -p /composer && \
+	curl -sS https://getcomposer.org/installer | \
+	php -- --install-dir=/usr/bin/ --filename=composer
 
 COPY *.php /
 COPY phpcs.sh /
