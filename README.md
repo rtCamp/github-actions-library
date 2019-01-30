@@ -51,6 +51,16 @@ action "Slack Notification" {
 }
 ```
 
+### Inspections
+
+1. PHP Codesniffer inspections. More details in internal [README.md](https://github.com/rtCamp/github-actions-library/blob/master/inspections/codesniffer/README.md)
+
+```workflow
+action "Run phpcs inspection" {
+  uses = "rtCamp/github-actions-library/inspections/codesniffer@master"
+}
+```
+
 ### Tests
 
 1. White Screen WordPress test. Activates all plugins and runs `wp eval` to check if WordPress is loading properly with the code to be deployed.
