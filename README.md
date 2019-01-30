@@ -60,3 +60,13 @@ action "Run phpcs inspection" {
   uses = "rtCamp/github-actions-library/inspections/codesniffer@master"
 }
 ```
+
+### Tests
+
+1. White Screen WordPress test. Activates all plugins and runs `wp eval` to check if WordPress is loading properly with the code to be deployed.
+
+```workflow
+action "White Screen Test" {
+  uses = "rtCamp/github-actions-library/test/white-screen@master"
+}
+```

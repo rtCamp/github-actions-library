@@ -1,10 +1,10 @@
 # alpine:latest at 2019-01-04T21:27:39IST
 FROM alpine@sha256:46e71df1e5191ab8b8034c5189e325258ec44ea739bba1e5645cff83c9048ff1
 
-LABEL "com.github.actions.icon"="star"
-LABEL "com.github.actions.color"="ffd33d"
-LABEL "com.github.actions.name"="Deploy"
-LABEL "com.github.actions.description"="This task will deploy an application"
+LABEL "com.github.actions.icon"="activity"
+LABEL "com.github.actions.color"="dark-grey"
+LABEL "com.github.actions.name"="White Screen Test"
+LABEL "com.github.actions.description"="Test for white screen of error"
 
 # Environments
 ENV TIMEZONE                 Asia/Kolkata
@@ -14,9 +14,8 @@ ENV PHP_MAX_FILE_UPLOAD      200
 ENV PHP_MAX_POST             100M
 ENV PHP_INI_DIR              /etc/php7/php.ini
 ENV HOME                     /root
-ENV PATH                     "/composer/vendor/bin:~/.local/bin:$PATH"
-ENV COMPOSER_ALLOW_SUPERUSER 1
-ENV COMPOSER_HOME            /composer
+ENV MYSQL_ROOT_PASSWORD      root
+ENV MYSQL_DATABASE           wp
 
 # PHP-CLI installation inspired from https://github.com/bravist/php-cli-alpine-aliyun-app/blob/master/Dockerfile
 # https://github.com/matriphe/docker-alpine-php/blob/master/7.0/FPM/Dockerfile
@@ -77,7 +76,7 @@ RUN apk update \
 		php7-xmlreader \
 		python \
 		py2-pip \
-    && pip install shyaml \
+		mysql \
 	&& cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
 	&& echo "${TIMEZONE}" > /etc/timezone \
 	&& apk del tzdata \
@@ -111,15 +110,10 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
     chmod +x wp-cli.phar && \
     mv wp-cli.phar /usr/local/bin/wp
 
-# Setup composer
-RUN mkdir -p /composer && \
-	curl -sS https://getcomposer.org/installer | \
-	php -- --install-dir=/usr/bin/ --filename=composer
-COPY composer.* /composer/
-RUN cd /composer && composer install
+# Setup mysql
+COPY *.sh /
+RUN addgroup mysql mysql && \
+	chmod +x "/test.sh" && \
+	bash /init-mysql.sh
 
-COPY deploy.* /
-COPY hosts.yml /
-RUN chmod +x /deploy.sh
-
-ENTRYPOINT ["/deploy.sh"]
+ENTRYPOINT ["/test.sh"]
