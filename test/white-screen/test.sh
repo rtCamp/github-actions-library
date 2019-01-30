@@ -5,11 +5,11 @@ exec /usr/bin/mysqld --user=mysql &
 sleep 5
 
 export PROJECT_ROOT="$(pwd)"
-export HTDOCS="$HOME/test"
+export TEST_HTDOCS="$HOME/test"
 export GITHUB_BRANCH=${GITHUB_REF##*heads/}
 
-mkdir -p "$HTDOCS"
-cd "$HTDOCS"
+mkdir -p "$TEST_HTDOCS"
+cd "$TEST_HTDOCS"
 export build_root="$(pwd)"
 
 #wp_version_file="$PROJECT_ROOT/WP-VERSION.txt"
@@ -19,7 +19,7 @@ wp core download --allow-root
 rm -r wp-content/
 
 # Setup WordPress files
-rsync -av  "$GITHUB_WORKSPACE/" "$HTDOCS/wp-content/"  > /dev/null
+rsync -av  "$GITHUB_WORKSPACE/" "$TEST_HTDOCS/wp-content/"  > /dev/null
 
 wp config create --dbname='wp' --dbuser='root' --dbpass='root' --allow-root
 wp core install --url=example.com --title=CI --admin_user=ci --admin_password=blahblahblah --admin_email=ci@example.com --allow-root
