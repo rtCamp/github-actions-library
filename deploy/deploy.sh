@@ -53,7 +53,7 @@ if [ "$VIP" = "true" ]; then
     MU_PLUGINS_URL=${MU_PLUGINS_URL:-"https://github.com/Automattic/vip-mu-plugins-public"}
     MU_PLUGINS_DIR="$HTDOCS/wp-content/mu-plugins"
     echo "Cloning mu-plugins from: $MU_PLUGINS_URL"
-    git clone -q --recursive "$MU_PLUGINS_URL" "$MU_PLUGINS_DIR"
+    git clone -q --recursive --depth=1 "$MU_PLUGINS_URL" "$MU_PLUGINS_DIR"
 fi
 
 cd "$GITHUB_WORKSPACE"
