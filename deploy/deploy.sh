@@ -41,9 +41,8 @@ cd "$HTDOCS"
 export build_root="$(pwd)"
 
 WP_VERSION=$(cat "$hosts_file" | shyaml get-value "$CI_SCRIPT_OPTIONS.wp-version" | tr '[:upper:]' '[:lower:]')
-wp core download --version="$WP_VERSION"
+wp core download --version="$WP_VERSION" --allow-root
 
-wp core download --allow-root
 rm -r wp-content/
 
 rsync -av  "$GITHUB_WORKSPACE/" "$HTDOCS/wp-content/"  > /dev/null
