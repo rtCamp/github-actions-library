@@ -11,6 +11,12 @@ hosts_file="$GITHUB_WORKSPACE/.github/hosts.yml"
 rsync -av "$hosts_file" /hosts.yml
 cat /hosts.yml
 
+# Setup custom deploy.php if found
+custom_deploy_php="$GITHUB_WORKSPACE/.github/deploy.php"
+if [ -f "$custom_deploy_php" ]; then
+    rsync -av "$custom_deploy_php" /deploy.php
+fi
+
 # get hostname
 hostname=$(cat "$hosts_file" | shyaml get-value "$GITHUB_BRANCH.hostname")
 
