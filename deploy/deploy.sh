@@ -4,13 +4,15 @@ export PATH="$PATH:$COMPOSER_HOME/vendor/bin"
 export PROJECT_ROOT="$(pwd)"
 export HTDOCS="$HOME/htdocs"
 export GITHUB_BRANCH=${GITHUB_REF##*heads/}
+export CI_SCRIPT_OPTIONS="ci_script_options"
 
 # Setup hosts file
-rsync -av "$GITHUB_WORKSPACE/.github/hosts.yml" /hosts.yml
+hosts_file="$GITHUB_WORKSPACE/.github/hosts.yml"
+rsync -av "$hosts_file" /hosts.yml
 cat /hosts.yml
 
 # get hostname
-hostname=$(cat /hosts.yml | shyaml get-value "$GITHUB_BRANCH.hostname")
+hostname=$(cat "$hosts_file" | shyaml get-value "$GITHUB_BRANCH.hostname")
 
 ENCODED_SSH_PRIVATE_KEY=$(curl --silent --header "X-Vault-Token: $VAULT_TOKEN" "$VAULT_URL/$hostname" | jq '.data' | jq '.[]')
 
@@ -44,6 +46,15 @@ rsync -av  "$GITHUB_WORKSPACE/" "$HTDOCS/wp-content/"  > /dev/null
 cd "$HTDOCS/wp-content/"
 rm -rf uploads
 ln -s ../../../uploads uploads
+
+# Setup mu-plugins if VIP
+VIP=$(cat "$hosts_file" | shyaml get-value "$CI_SCRIPT_OPTIONS.vip" | tr '[:upper:]' '[:lower:]')
+if [ "$VIP" = "true" ]; then
+    MU_PLUGINS_URL=${MU_PLUGINS_URL:-"https://github.com/Automattic/vip-mu-plugins-public"}
+    MU_PLUGINS_DIR="$HTDOCS/wp-content/mu-plugins"
+    echo "Cloning mu-plugins from: $MU_PLUGINS_URL"
+    git clone -q --recursive --depth=1 "$MU_PLUGINS_URL" "$MU_PLUGINS_DIR"
+fi
 
 cd "$GITHUB_WORKSPACE"
 dep deploy "$GITHUB_BRANCH"

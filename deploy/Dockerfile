@@ -77,6 +77,7 @@ RUN apk update \
 		php7-xmlreader \
 		python \
 		py2-pip \
+    && pip install shyaml \
 	&& cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
 	&& echo "${TIMEZONE}" > /etc/timezone \
 	&& apk del tzdata \
