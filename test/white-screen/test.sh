@@ -4,7 +4,6 @@
 exec /usr/bin/mysqld --user=mysql &
 sleep 5
 
-export PATH="$PATH:$COMPOSER_HOME/vendor/bin"
 export PROJECT_ROOT="$(pwd)"
 export HTDOCS="$HOME/htdocs"
 export GITHUB_BRANCH=${GITHUB_REF##*heads/}
@@ -22,7 +21,7 @@ rm -r wp-content/
 # Setup WordPress files
 rsync -av  "$GITHUB_WORKSPACE/" "$HTDOCS/wp-content/"  > /dev/null
 
-wp config create --dbname='wp' --dbuser='root' --dbpass='root' --dbhost='127.0.0.1' --allow-root
+wp config create --dbname='wp' --dbuser='root' --dbpass='root' --allow-root
 wp core install --url=example.com --title=CI --admin_user=ci --admin_password=blahblahblah --admin_email=ci@example.com --allow-root
 rm -rf "$build_root/wp-content/themes/"{twentyfifteen,twentysixteen,twentyseventeen}
 wp plugin activate --all --allow-root
