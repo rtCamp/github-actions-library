@@ -7,6 +7,7 @@ sleep 5
 export PROJECT_ROOT="$(pwd)"
 export TEST_HTDOCS="$HOME/test"
 export GITHUB_BRANCH=${GITHUB_REF##*heads/}
+export CI_SCRIPT_OPTIONS="ci_script_options"
 hosts_file="$GITHUB_WORKSPACE/.github/hosts.yml"
 
 mkdir -p "$TEST_HTDOCS"
