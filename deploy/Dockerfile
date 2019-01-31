@@ -118,6 +118,12 @@ RUN mkdir -p /composer && \
 COPY composer.* /composer/
 RUN cd /composer && composer install
 
+# Setup Vault
+RUN wget https://releases.hashicorp.com/vault/1.0.2/vault_1.0.2_linux_amd64.zip && \
+	unzip vault_1.0.2_linux_amd64.zip && \
+	rm vault_1.0.2_linux_amd64.zip && \
+	mv vault /usr/local/bin/vault
+
 COPY deploy.* /
 COPY hosts.yml /
 RUN chmod +x /deploy.sh
