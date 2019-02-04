@@ -1,4 +1,4 @@
-s# GitHub action for PHPCS inspections
+# GitHub action for PHPCS inspections
 
 ## Usage
 
