@@ -20,18 +20,26 @@ fi
 # get hostname
 hostname=$(cat "$hosts_file" | shyaml get-value "$GITHUB_BRANCH.hostname")
 
-ENCODED_SSH_PRIVATE_KEY=$(curl --silent --header "X-Vault-Token: $VAULT_TOKEN" "$VAULT_URL/$hostname" | jq '.data' | jq '.[]')
-
 printf "[\e[0;34mNOTICE\e[0m] Setting up SSH access to server.\n"
 
 SSH_DIR="$HOME/.ssh"
 mkdir -p "$SSH_DIR"
 chmod 700 "$SSH_DIR"
 
-echo "$ENCODED_SSH_PRIVATE_KEY" | base64 -d > "$SSH_DIR/id_rsa"
-chmod 600 "$SSH_DIR/id_rsa"
-eval "$(ssh-agent -s)"
-ssh-add "$SSH_DIR/id_rsa"
+# Generate a key-pair
+ssh-keygen -t rsa -b 4096 -C "GH-actions-ssh-deploy-key" -f "$HOME/.ssh/id_rsa" -N ""
+
+# Get signed key from vault
+vault write -field=signed_key ssh-client-signer/sign/my-role public_key=@$HOME/.ssh/id_rsa.pub > $HOME/.ssh/signed-cert.pub
+
+# Create ssh config file. `~/.ssh/config` does not work.
+cat > /etc/ssh/ssh_config <<EOL
+Host $hostname
+HostName $hostname
+IdentityFile ${HOME}/.ssh/signed-cert.pub
+IdentityFile ${HOME}/.ssh/id_rsa
+User root
+EOL
 
 # echo "$SSH_KNOWN_HOSTS" | tr -d '\r' > "$SSH_DIR/known_hosts"
 # chmod 644 "$SSH_DIR/known_hosts"
