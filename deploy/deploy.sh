@@ -32,7 +32,8 @@ ssh-keygen -t rsa -b 4096 -C "GH-actions-ssh-deploy-key" -f "$HOME/.ssh/id_rsa" 
 # Get signed key from vault
 vault write -field=signed_key ssh-client-signer/sign/my-role public_key=@$HOME/.ssh/id_rsa.pub > $HOME/.ssh/signed-cert.pub
 
-cat > "$HOME/.ssh/config" <<EOL
+# Create ssh config file. `~/.ssh/config` does not work.
+cat > /etc/ssh/ssh_config <<EOL
 Host $hostname
 HostName $hostname
 IdentityFile ${HOME}/.ssh/signed-cert.pub
