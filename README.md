@@ -12,6 +12,8 @@ A collection of utilities for running WordPress deployments using GitHub actions
 
 ## Actions in the Library and their usage examples
 
+Note: `secrets` in the usage examples can be configured in the repo settings. Look into [storing secrets](https://developer.github.com/actions/creating-workflows/storing-secrets/#storing-secrets) for more information on how to setup secrets.
+
 ### Branch Filter
 
 Example showing how mulitple args can sent to filter required branches and block the rest.
