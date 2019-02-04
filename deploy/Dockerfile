@@ -17,6 +17,7 @@ ENV HOME                     /root
 ENV PATH                     "/composer/vendor/bin:~/.local/bin:$PATH"
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_HOME            /composer
+ENV VAULT_VERSION            1.0.2
 
 # PHP-CLI installation inspired from https://github.com/bravist/php-cli-alpine-aliyun-app/blob/master/Dockerfile
 # https://github.com/matriphe/docker-alpine-php/blob/master/7.0/FPM/Dockerfile
@@ -119,9 +120,9 @@ COPY composer.* /composer/
 RUN cd /composer && composer install
 
 # Setup Vault
-RUN wget https://releases.hashicorp.com/vault/1.0.2/vault_1.0.2_linux_amd64.zip && \
-	unzip vault_1.0.2_linux_amd64.zip && \
-	rm vault_1.0.2_linux_amd64.zip && \
+RUN wget https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip && \
+	unzip vault_${VAULT_VERSION}_linux_amd64.zip && \
+	rm vault_${VAULT_VERSION}_linux_amd64.zip && \
 	mv vault /usr/local/bin/vault
 
 COPY deploy.* /
