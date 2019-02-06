@@ -1,16 +1,13 @@
 # GitHub action for Slack-Notify
 
-### Uses: https://hub.docker.com/r/mrrobot47/slack-notify
+### Uses: https://hub.docker.com/r/mrrobot47/slack-notify, https://github.com/mrrobot47/slack-notify/tree/alpine
 
 ## Slack Incoming Webhooks
 
 This tool uses [Slack Incoming Webhooks](https://api.slack.com/incoming-webhooks)
 to send a message to your slack channel. 
 
-It also uses [Vault by HashiCorp](https://www.vaultproject.io/) to get the slack webhook. The `VAULT_URL` to be set in secret should have the path resolved such that: `$VAULT_URL/slack-webhook` generates the entire path to the secret. The key for secret should be `url` and the vaule should be the webhook.
-
-Before you can use this tool, you need to log into your Slack account and configure
-slack webhook and setup secret in your vault, e.g., in path `https://example.com:8200/v1/secret/slack-webhook`
+It also uses [Vault by HashiCorp](https://www.vaultproject.io/) to get the slack webhook. The `VAULT_ADDR` secret variable specifies the address on which vault is deployed, e.g., `VAULT_ADDR=https://example.com:8200`, the slack webhook should be put inside the kv store `secret`, such `vault read -field=webhook secret/slack` get's the vaule of the webhook.
 
 ## Usage
 
@@ -21,7 +18,7 @@ action "Slack Notification" {
     SLACK_MESSAGE = "Deploy success :tada: GitHub Actions :rocket:",
     SLACK_USERNAME="notify-bot"
   }
-  secrets = ["VAULT_URL", "VAULT_TOKEN"]
+  secrets = ["VAULT_ADDR", "VAULT_TOKEN"]
 }
 ```
 
@@ -34,7 +31,7 @@ action "Slack Notification" {
     SLACK_MESSAGE = "Deploy success :tada: GitHub Actions :rocket:",
     SLACK_USERNAME="notify-bot"
   }
-  secrets = ["VAULT_URL", "VAULT_TOKEN"]
+  secrets = ["VAULT_ADDR", "VAULT_TOKEN"]
 }
 ```
 

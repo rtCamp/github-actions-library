@@ -49,7 +49,7 @@ action "Slack Notification" {
     SLACK_MESSAGE = "Deploy success :tada: GitHub Actions :rocket:",
     SLACK_USERNAME="notify-bot"
   }
-  secrets = ["VAULT_URL", "VAULT_TOKEN"]
+  secrets = ["VAULT_ADDR", "VAULT_TOKEN"]
 }
 ```
 
@@ -80,6 +80,6 @@ Deployment using [deployer](https://deployer.org/). Deployment general settings 
 ```workflow
 action "Deploy" {
   uses = "rtCamp/github-actions-library/deploy@master"
-  secrets = ["VAULT_URL", "VAULT_TOKEN"]
+  secrets = ["VAULT_ADDR", "VAULT_TOKEN"]
 }
 ```
