@@ -50,14 +50,31 @@ ci_script_options:
   wp-version: latest
 ```
 
-3. The setup of ssh keys for deployment is managed through [vault](https://www.vaultproject.io/). `VAULT_URL` should be setup such that request to `VAULT_URL/hostname` with `VAULT_TOKEN` should give the ssh key.
+3. The setup of ssh keys for deployment is managed through [vault](https://www.vaultproject.io/). The `VAULT_ADDR` secret variable specifies the address on which vault is deployed, e.g., `VAULT_ADDR=https://example.com:8200`.
+
+4. For Signed SSH Certificates to work, follow the steps give [here](https://www.vaultproject.io/docs/secrets/ssh/signed-ssh-certificates.html#signing-key-amp-role-configuration) on the deployed vault instance.
+
+5. Then, to configure the server to accept ssh connection via signed certificate, run the following steps:
+```bash
+export VAULT_ADDR='https://example.com:8200'
+export VAULT_TOKEN='vault-root-token'
+
+# Add the public key to all target host's SSH configuration.
+curl -o /etc/ssh/trusted-user-ca-keys.pem "$VAULT_ADDR/v1/ssh-client-signer/public_key"
+
+# Add the path where the public key contents are stored to the SSH configuration file as the TrustedUserCAKeys option.
+echo "TrustedUserCAKeys /etc/ssh/trusted-user-ca-keys.pem" >> /etc/ssh/sshd_config
+
+# Restart ssh service. This may differ according to the OS.
+systemctl restart ssh
+```
 
 ## Usage
 
 ```workflow
 action "Deploy" {
   uses = "rtCamp/github-actions-library/deploy@master"
-  secrets = ["VAULT_URL", "VAULT_TOKEN"]
+  secrets = ["VAULT_ADDR", "VAULT_TOKEN"]
 }
 ```
 
