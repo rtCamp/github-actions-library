@@ -126,7 +126,8 @@ RUN wget https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VER
 	mv vault /usr/local/bin/vault
 
 COPY deploy.* /
+COPY entrypoint.sh /
 COPY hosts.yml /
-RUN chmod +x /deploy.sh
+RUN chmod +x /*.sh
 
-ENTRYPOINT ["/deploy.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
