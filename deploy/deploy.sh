@@ -49,9 +49,6 @@ UserKnownHostsFile $known_hosts_file
 User root
 EOL
 
-# echo "$SSH_KNOWN_HOSTS" | tr -d '\r' > "$SSH_DIR/known_hosts"
-# chmod 644 "$SSH_DIR/known_hosts"
-
 mkdir -p "$HTDOCS"
 cd "$HTDOCS"
 export build_root="$(pwd)"
