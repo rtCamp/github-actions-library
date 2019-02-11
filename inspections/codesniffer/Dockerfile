@@ -110,7 +110,7 @@ RUN mkdir -p /composer && \
 	php -- --install-dir=/usr/bin/ --filename=composer
 
 COPY *.php /
-COPY phpcs.sh /
-RUN chmod +x /phpcs.sh
+COPY *.sh /
+RUN chmod +x /*.sh
 
-ENTRYPOINT ["/phpcs.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
