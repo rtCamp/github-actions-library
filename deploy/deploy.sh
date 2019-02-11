@@ -34,7 +34,7 @@ vault write -field=signed_key ssh-client-signer/sign/my-role public_key=@$HOME/.
 
 # Setup known_hosts
 known_hosts_file="${SSH_DIR}/known_hosts"
-known_host_data="@cert-authority *.${hostname} "
+known_host_data="@cert-authority ${hostname} "
 host_signer=$(vault read -field=public_key ssh-host-signer/config/ca)
 known_host_data="${known_host_data}${host_signer}"
 echo "$known_host_data" >> "$known_hosts_file"
