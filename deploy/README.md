@@ -20,30 +20,17 @@ master:
   # Path to deploy. Can be auto-determined using EE version if not specified explicitly.
   deploy_path: /opt/easyengine/sites/example.com/app/htdocs
 
-
-  # Setting these options because of ssh-issues in GH actions.
-  # Should not be needed in future, hopefully :fingers-crossed:
-  sshOptions:
-    UserKnownHostsFile: /dev/null
-    StrictHostKeyChecking: no
-
 staging:
   hostname: stag.example.com
   user: root
   stage: develop
   deploy_path: /opt/easyengine/sites/stag.example.com/app/htdocs
-  sshOptions:
-    UserKnownHostsFile: /dev/null
-    StrictHostKeyChecking: no
 
 develop:
   hostname: dev.example.com
   user: root
   stage: develop
   deploy_path: /opt/easyengine/sites/dev.example.com/app/htdocs
-  sshOptions:
-    UserKnownHostsFile: /dev/null
-    StrictHostKeyChecking: no
 
 ci_script_options:
   vip: true
