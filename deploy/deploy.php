@@ -86,7 +86,7 @@ task('opcache:reset', function () {
 
 desc('Symlink wp-config.php');
 task('wp:config', function () {
-	run('[ ! -f {{release_path}}/../wp-config.php ] && cd {{release_path}}/../ && ln -sn ../../wp-config.php && echo "Created Symlink for wp-config.php." || echo ""');
+	run('[ ! -f {{release_path}}/../wp-config.php ] && cd {{release_path}}/../ && ln -sn ../wp-config.php && echo "Created Symlink for wp-config.php." || echo ""');
 });
 
 /*
