@@ -52,7 +52,6 @@ rsync -av  "$GITHUB_WORKSPACE/" "$HTDOCS/wp-content/"  > /dev/null
 # Symlink uploads directory
 cd "$HTDOCS/wp-content/"
 rm -rf uploads
-ln -s ../../../uploads uploads
 
 # Setup mu-plugins if VIP
 VIP=$(cat "$hosts_file" | shyaml get-value "$CI_SCRIPT_OPTIONS.vip" | tr '[:upper:]' '[:lower:]')
