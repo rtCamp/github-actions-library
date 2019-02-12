@@ -113,7 +113,7 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 # Setup mysql
 COPY *.sh /
 RUN addgroup mysql mysql && \
-	chmod +x "/test.sh" && \
+	chmod +x /*.sh && \
 	bash /init-mysql.sh
 
-ENTRYPOINT ["/test.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
