@@ -11,7 +11,6 @@ if (file_exists('vendor/deployer/recipes/rsync.php')) {
 	require getenv('COMPOSER_HOME') . '/vendor/deployer/recipes/recipe/rsync.php';
 }
 
-set('shared_files', ['wp-config.php']);
 set('shared_dirs', ['wp-content/uploads']);
 set('writable_dirs', [
 	'wp-content',
@@ -39,7 +38,6 @@ set('rsync', [
 		'.circleci',
 		'package-lock.json',
 		'package.json',
-		'screenshot.png',
 		'phpcs.xml'
 	],
 	'exclude-file' => true,
@@ -86,13 +84,18 @@ task('opcache:reset', function () {
 
 });
 
+desc('Symlink wp-config.php');
+task('wp:config', function () {
+	run('[ ! -f {{release_path}}/../wp-config.php ] && cd {{release_path}}/../ && ln -sn ../wp-config.php && echo "Created Symlink for wp-config.php." || echo ""');
+});
+
 /*
  * Change permissions to 'www-data' for 'current/',
  * so that 'wp-cli' can read/write files.
  */
 desc('Correct Permissions');
 task('permissions:set', function () {
-	$output = run('chown -R www-data:www-data {{deploy_path}}/current && chown www-data:www-data {{deploy_path}}/current/*');
+	$output = run('chown -R www-data:www-data {{deploy_path}}');
 	writeln('<info>' . $output . '</info>');
 });
 
@@ -104,7 +107,9 @@ task('deploy', [
 	'deploy:lock',
 	'deploy:release',
 	'rsync',
+	'wp:config',
 	'cachetool:download',
+	'deploy:shared',
 	'deploy:symlink',
 	'permissions:set',
 	'opcache:reset',
