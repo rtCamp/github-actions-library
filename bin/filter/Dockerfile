@@ -24,6 +24,7 @@ RUN apt-get update && \
 ENV PATH="/usr/local/bin:${PATH}"
 
 COPY bin /usr/local/bin/
-COPY entrypoint.sh /entrypoint.sh
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x -R /usr/local/bin/
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
