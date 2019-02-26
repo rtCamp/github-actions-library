@@ -17,5 +17,5 @@ while read -r -d $'\0' branch; do
 done
 
 # If it reaches here then there have been no matches
-echo "$GITHUB_REF does not match with any given branch in `hosts.yml`"
+echo "$GITHUB_REF does not match with any given branch in 'hosts.yml'"
 exit 78
