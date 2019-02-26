@@ -16,13 +16,12 @@ Note: `secrets` in the usage examples can be configured in the repo settings. Lo
 
 ### Branch Filter
 
-Example showing how mulitple args can sent to filter required branches and block the rest.
+Filter that reads `.github/hosts.yml` to find and filter out branches.
 
 ```workflow
 # Filter for specific deploy branch
 action "Whitelist deploy branches" {
   uses = "rtCamp/github-actions-library/bin/filter@master"
-  args = "branch master develop qa"
 }
 ```
 
