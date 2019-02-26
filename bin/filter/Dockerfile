@@ -12,10 +12,14 @@ LABEL "com.github.actions.color"="gray-dark"
 COPY LICENSE README.md THIRD_PARTY_NOTICE.md /
 
 RUN apt-get update && \
-    apt-get install --no-install-recommends -y \
-        jq && \
+	apt-get install --no-install-recommends -y \
+	jq \
+	python \
+	python-pip && \
+	pip install --upgrade setuptools && \
+	pip install shyaml && \
 	apt-get clean -y && \
-    rm -rf /var/lib/apt/lists/*
+	rm -rf /var/lib/apt/lists/*
 
 ENV PATH="/usr/local/bin:${PATH}"
 

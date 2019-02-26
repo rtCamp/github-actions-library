@@ -1,17 +1,15 @@
 #!/bin/bash
 
+hosts_file="$GITHUB_WORKSPACE/.github/hosts.yml"
+
 if [ "$GITHUB_REF" = "" ]; then
     echo "\$GITHUB_REF is not set"
     exit 1
 fi
 
-if [ "$#" -eq 0 ]; then
-    echo "No arguments passed"
-    exit 1
-fi
-
-for arg in "$@"; do
-    gh_ref="refs/heads/${arg:-*}"
+cat "$hosts_file" | shyaml keys-0 | \
+while read -r -d $'\0' branch; do
+    gh_ref="refs/heads/$branch"
     if [ "$GITHUB_REF" = "$gh_ref" ]; then
         echo "$GITHUB_REF matches $gh_ref"
         exit 0
@@ -19,5 +17,5 @@ for arg in "$@"; do
 done
 
 # If it reaches here then there have been no matches
-echo "$GITHUB_REF does not match with any passed arguments"
+echo "$GITHUB_REF does not match with any given branch in `hosts.yml`"
 exit 78
