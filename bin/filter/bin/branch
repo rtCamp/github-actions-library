@@ -7,13 +7,10 @@ if [ "$GITHUB_REF" = "" ]; then
     exit 1
 fi
 
-cat "$hosts_file" | shyaml keys-0 | \
-while read -r -d $'\0' branch; do
-    gh_ref="refs/heads/$branch"
-    if [ "$GITHUB_REF" = "$gh_ref" ]; then
-        echo "$GITHUB_REF matches $gh_ref"
-        exit 0
-    fi
+for branch in $(cat hosts.yml | shyaml keys); do
+    [[ "$GITHUB_REF" == "refs/heads/$branch" ]] && \
+    echo "$GITHUB_REF matches refs/heads/$branch" && \
+    exit 0
 done
 
 # If it reaches here then there have been no matches
