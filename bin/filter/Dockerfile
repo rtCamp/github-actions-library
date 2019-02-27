@@ -13,7 +13,6 @@ COPY LICENSE README.md THIRD_PARTY_NOTICE.md /
 
 RUN apt-get update && \
 	apt-get install --no-install-recommends -y \
-	jq \
 	python \
 	python-pip && \
 	pip install --upgrade setuptools && \
