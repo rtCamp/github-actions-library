@@ -28,6 +28,37 @@ echo "ℹ︎ SLUG is $SLUG"
 VERSION=${GITHUB_REF#refs/tags/}
 echo "ℹ︎ VERSION is $VERSION"
 
+git archive --format=tar --prefix="archive-${VERSION}/" "${VERSION}" | (cd /tmp/ && tar xf -)
+cd "/tmp/archive-${VERSION}/"
+
+# Install composer dependencies
+if [[ !-z "$RUN_COMPOSER" ]]; then
+  composer install --no-dev --optimize-autoloader
+fi
+
+# Install npm dependencies
+if [[ ! -z "$RUN_NPM" ]]; then
+  npm install
+fi
+
+# Install project dependencies
+if [[ ! -z "$CUSTOM_COMMAND" ]]; then
+  eval "$CUSTOM_COMMAND"
+fi
+
+# Use a custom path inside git repo to be used as root path.
+if [[ -z "$CUSTOM_PATH" ]]; then
+  CUSTOM_PATH='';
+fi
+
+# If EXCLUDE_LIST is provided store them in a file for rsync.
+if [[ -z "$EXCLUDE_LIST" ]]; then
+  echo $EXCLUDE_LIST | tr " " "\n" >> exclude.txt
+fi
+
+# Create exclude file with default values anyway.
+echo ".git .github ${ASSETS_DIR} exclude.txt" | tr " " "\n" >> exclude.txt
+
 SVN_URL="http://plugins.svn.wordpress.org/${SLUG}/"
 SVN_DIR="/github/svn-${SLUG}"
 
@@ -43,7 +74,7 @@ echo "➤ Copying files..."
 
 # Copy from current branch to /trunk, excluding dotorg assets
 # The --delete flag will delete anything in destination that no longer exists in source
-rsync -r --exclude "/$ASSETS_DIR/" --exclude ".git/" --exclude ".github/" "$GITHUB_WORKSPACE/" trunk/ --delete
+rsync -r --exclude-from="/tmp/archive-${VERSION}/exclude.txt" "/tmp/archive-${VERSION}/${CUSTOM_PATH}" trunk/ --delete
 
 if [[ ! -z "$ASSETS_DIR" ]]; then
     # Copy dotorg assets to /assets
@@ -62,11 +93,13 @@ svn status | grep '^\!' | sed 's/! *//' | xargs -I% svn rm % > /dev/null
 
 svn status
 
-echo "︎➤ Committing files..."
+eval "ls -al $SVN_DIR/trunk"
+
+#echo "︎➤ Committing files..."
 #svn commit -m "Update to version $VERSION from GitHub" --no-auth-cache --non-interactive  --username "$WORDPRESS_USERNAME" --password "$WORDPRESS_PASSWORD"
 
 # SVN tag to VERSION
-echo "➤ Tagging version..."
+#echo "➤ Tagging version..."
 #svn cp "^/$SLUG/trunk" "^/$SLUG/tags/$VERSION" -m "Tag $VERSION" --no-auth-cache --non-interactive --username "$WORDPRESS_USERNAME" --password "$WORDPRESS_PASSWORD"
 
-echo "✓ Plugin deployed!"
+#echo "✓ Plugin deployed!"
