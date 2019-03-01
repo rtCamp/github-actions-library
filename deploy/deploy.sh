@@ -26,7 +26,7 @@ ssh-keygen -t rsa -b 4096 -C "GH-actions-ssh-deploy-key" -f "$HOME/.ssh/id_rsa" 
 # Get signed key from vault
 if [[ -n "$VAULT_GITHUB_TOKEN" ]]; then
     unset VAULT_TOKEN
-    vault login -method=github token="$VAULT_GITHUB_TOKEN"
+    vault login -method=github token="$VAULT_GITHUB_TOKEN" > /dev/null
 fi
 
 vault write -field=signed_key ssh-client-signer/sign/my-role public_key=@$HOME/.ssh/id_rsa.pub > $HOME/.ssh/signed-cert.pub
