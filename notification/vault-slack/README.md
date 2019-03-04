@@ -11,6 +11,8 @@ It also uses [Vault by HashiCorp](https://www.vaultproject.io/) to get the slack
 
 ## Usage
 
+1. With Vault Setup using `VAULT_TOKEN`.
+
 ```workflow
 action "Slack Notification" {
   uses = "rtCamp/github-actions-library/notification/slack@master"
@@ -19,6 +21,19 @@ action "Slack Notification" {
     SLACK_USERNAME="notify-bot"
   }
   secrets = ["VAULT_ADDR", "VAULT_TOKEN"]
+}
+```
+
+2. With Vault Setup Using GitHub token, if GitHub login is setup on default path. (GitHub token as secret variable: `VAULT_GITHUB_TOKEN`)
+
+```workflow
+action "Slack Notification" {
+  uses = "rtCamp/github-actions-library/notification/slack@master"
+  env = {
+    SLACK_MESSAGE = "Deploy success :tada: GitHub Actions :rocket:",
+    SLACK_USERNAME="notify-bot"
+  }
+  secrets = ["VAULT_ADDR", "VAULT_GITHUB_TOKEN"]
 }
 ```
 
