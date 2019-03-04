@@ -12,14 +12,18 @@ LABEL "com.github.actions.color"="gray-dark"
 COPY LICENSE README.md THIRD_PARTY_NOTICE.md /
 
 RUN apt-get update && \
-    apt-get install --no-install-recommends -y \
-        jq && \
+	apt-get install --no-install-recommends -y \
+	python \
+	python-pip && \
+	pip install --upgrade setuptools && \
+	pip install shyaml && \
 	apt-get clean -y && \
-    rm -rf /var/lib/apt/lists/*
+	rm -rf /var/lib/apt/lists/*
 
 ENV PATH="/usr/local/bin:${PATH}"
 
 COPY bin /usr/local/bin/
-COPY entrypoint.sh /entrypoint.sh
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x -R /usr/local/bin/
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
