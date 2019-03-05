@@ -71,10 +71,30 @@ systemctl restart ssh
 
 ## Usage
 
+1. With [vault](https://www.vaultproject.io/) setup, using `VAULT_TOKEN`
+
 ```workflow
 action "Deploy" {
   uses = "rtCamp/github-actions-library/deploy@master"
   secrets = ["VAULT_ADDR", "VAULT_TOKEN"]
+}
+```
+
+2. With [vault](https://www.vaultproject.io/) setup, using GitHub login method. The token should have `read: org` permission and then it should be setup in secret variable `VAULT_GITHUB_TOKEN`.
+
+```workflow
+action "Deploy" {
+  uses = "rtCamp/github-actions-library/deploy@master"
+  secrets = ["VAULT_ADDR", "VAULT_GITHUB_TOKEN"]
+}
+```
+
+3. Using SSH private key.
+
+```workflow
+action "Deploy" {
+  uses = "rtCamp/github-actions-library/deploy@master"
+  secrets = ["SSH_PRIVATE_KEY"]
 }
 ```
 

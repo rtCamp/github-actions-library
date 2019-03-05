@@ -84,9 +84,20 @@ action "White Screen Test" {
 
 Deployment using [deployer](https://deployer.org/). Deployment general settings like branch and hosts related to the branch etc., are setup in the `hosts.yml` file. The setup of ssh keys for deployment is managed through [vault](https://www.vaultproject.io/). More details in internal [README.md](https://github.com/rtCamp/github-actions-library/blob/master/deploy/README.md)
 
+1. With [vault](https://www.vaultproject.io/) setup, using `VAULT_TOKEN`
+
 ```workflow
 action "Deploy" {
   uses = "rtCamp/github-actions-library/deploy@master"
   secrets = ["VAULT_ADDR", "VAULT_TOKEN"]
+}
+```
+
+2. Using SSH private key.
+
+```workflow
+action "Deploy" {
+  uses = "rtCamp/github-actions-library/deploy@master"
+  secrets = ["SSH_PRIVATE_KEY"]
 }
 ```
