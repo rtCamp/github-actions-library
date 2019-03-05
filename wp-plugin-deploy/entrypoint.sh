@@ -9,18 +9,18 @@ set -eo
 # Ensure SVN username and password are set
 # IMPORTANT: secrets are accessible by anyone with write access to the repository!
 if [[ -z "$WORDPRESS_USERNAME" ]]; then
-	echo "Set the WORDPRESS_USERNAME secret"
-	exit 1
+    echo "Set the WORDPRESS_USERNAME secret"
+    exit 1
 fi
 
 if [[ -z "$WORDPRESS_PASSWORD" ]]; then
-	echo "Set the WORDPRESS_PASSWORD secret"
-	exit 1
+    echo "Set the WORDPRESS_PASSWORD secret"
+    exit 1
 fi
 
 # Allow some ENV variables to be customized
 if [[ -z "$SLUG" ]]; then
-	SLUG=${GITHUB_REPOSITORY#*/}
+    SLUG=${GITHUB_REPOSITORY#*/}
 fi
 echo "ℹ︎ SLUG is $SLUG"
 
@@ -50,20 +50,14 @@ if [[ ! -z "$CUSTOM_COMMAND" ]]; then
   eval "$CUSTOM_COMMAND"
 fi
 
-# Use a custom path inside git repo to be used as root path.
-# Files will be copied from this path to plugin trunk directory.
-if [[ -z "$CUSTOM_PATH" ]]; then
-  CUSTOM_PATH='';
-fi
-
 # If EXCLUDE_LIST is provided store them in a file for rsync.
 # This env variable expects a file/folder names to be exclude while doing the rsync command.
-if [[ -z "$EXCLUDE_LIST" ]]; then
+if [[ ! -z "$EXCLUDE_LIST" ]]; then
   echo $EXCLUDE_LIST | tr " " "\n" >> exclude.txt
 fi
 
 # Create exclude file with default values anyway.
-echo ".git .github ${ASSETS_DIR} exclude.txt" | tr " " "\n" >> exclude.txt
+echo ".git .github exclude.txt ${ASSETS_DIR}" | tr " " "\n" >> exclude.txt
 
 SVN_URL="http://plugins.svn.wordpress.org/${SLUG}/"
 SVN_DIR="/github/svn-${SLUG}"
@@ -78,12 +72,19 @@ svn update --set-depth infinity trunk
 
 echo "➤ Copying files..."
 
-# Copy from current branch to /trunk, excluding dotorg assets
+# Copy from repository root / custom path and exclude file/folder provided in exclude.txt
 # The --delete flag will delete anything in destination that no longer exists in source
-rsync -r --exclude-from="/tmp/archive-${VERSION}/exclude.txt" "/tmp/archive-${VERSION}/${CUSTOM_PATH}" trunk/ --delete
+
+if [[ ! -z "$CUSTOM_PATH" ]]; then
+    # Use a custom path inside git repo to be used as root path for rsync if provided.
+    # Files will be copied from this path to plugin trunk directory.
+    rsync -r --delete --exclude-from="/tmp/archive-${VERSION}/exclude.txt" "/tmp/archive-${VERSION}/${CUSTOM_PATH}/" trunk/
+else
+    rsync -r --delete --exclude-from="/tmp/archive-${VERSION}/exclude.txt" "/tmp/archive-${VERSION}/" trunk/
+fi
 
 if [[ ! -z "$ASSETS_DIR" ]]; then
-    # Copy dotorg assets to /assets
+    # Copy assets to /assets
     rsync -r "$GITHUB_WORKSPACE/$ASSETS_DIR/" assets/ --delete
 fi
 
@@ -99,13 +100,11 @@ svn status | grep '^\!' | sed 's/! *//' | xargs -I% svn rm % > /dev/null
 
 svn status
 
-eval "ls -al $SVN_DIR/trunk"
-
-#echo "︎➤ Committing files..."
-#svn commit -m "Update to version $VERSION from GitHub" --no-auth-cache --non-interactive  --username "$WORDPRESS_USERNAME" --password "$WORDPRESS_PASSWORD"
+echo "︎➤ Committing files..."
+svn commit -m "Update to version $VERSION from GitHub" --no-auth-cache --non-interactive  --username "$WORDPRESS_USERNAME" --password "$WORDPRESS_PASSWORD"
 
 # SVN tag to VERSION
-#echo "➤ Tagging version..."
-#svn cp "^/$SLUG/trunk" "^/$SLUG/tags/$VERSION" -m "Tag $VERSION" --no-auth-cache --non-interactive --username "$WORDPRESS_USERNAME" --password "$WORDPRESS_PASSWORD"
+echo "➤ Tagging version..."
+svn cp "^/$SLUG/trunk" "^/$SLUG/tags/$VERSION" -m "Tag $VERSION" --no-auth-cache --non-interactive --username "$WORDPRESS_USERNAME" --password "$WORDPRESS_PASSWORD"
 
-#echo "✓ Plugin deployed!"
+echo "✓ Plugin deployed!"

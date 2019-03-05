@@ -1,4 +1,4 @@
-FROM rtcamp/ci-deployer
+FROM awhalen/docker-php-composer-node
 
 LABEL "com.github.actions.name"="WordPress Plugin Deploy"
 LABEL "com.github.actions.description"="Deploy to the WordPress Plugin Repository"
@@ -10,5 +10,8 @@ RUN apt-get update \
 	&& apt-get clean -y \
 	&& rm -rf /var/lib/apt/lists/*
 
+RUN npm install -g grunt-cli && npm install --global gulp-cli
+
 COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /*.sh
 ENTRYPOINT ["/entrypoint.sh"]
