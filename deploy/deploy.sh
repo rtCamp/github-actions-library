@@ -20,8 +20,15 @@ SSH_DIR="$HOME/.ssh"
 mkdir -p "$SSH_DIR"
 chmod 700 "$SSH_DIR"
 
-# Generate a key-pair
-ssh-keygen -t rsa -b 4096 -C "GH-actions-ssh-deploy-key" -f "$HOME/.ssh/id_rsa" -N ""
+if [[ -n "$SSH_PRIVATE_KEY" ]]; then
+    echo "$SSH_PRIVATE_KEY" | tr -d '\r' > "$SSH_DIR/id_rsa"
+    chmod 600 "$SSH_DIR/id_rsa"
+    eval "$(ssh-agent -s)"
+    ssh-add "$SSH_DIR/id_rsa"
+else
+    # Generate a key-pair
+    ssh-keygen -t rsa -b 4096 -C "GH-actions-ssh-deploy-key" -f "$HOME/.ssh/id_rsa" -N ""
+fi
 
 # Get signed key from vault
 if [[ -n "$VAULT_GITHUB_TOKEN" ]]; then
@@ -29,16 +36,18 @@ if [[ -n "$VAULT_GITHUB_TOKEN" ]]; then
     vault login -method=github token="$VAULT_GITHUB_TOKEN" > /dev/null
 fi
 
-vault write -field=signed_key ssh-client-signer/sign/my-role public_key=@$HOME/.ssh/id_rsa.pub > $HOME/.ssh/signed-cert.pub
+if [[ -n "$VAULT_ADDR" ]]; then
+    vault write -field=signed_key ssh-client-signer/sign/my-role public_key=@$HOME/.ssh/id_rsa.pub > $HOME/.ssh/signed-cert.pub
 
-# Create ssh config file. `~/.ssh/config` does not work.
-cat > /etc/ssh/ssh_config <<EOL
+    # Create ssh config file. `~/.ssh/config` does not work.
+    cat > /etc/ssh/ssh_config <<EOL
 Host $hostname
 HostName $hostname
 IdentityFile ${HOME}/.ssh/signed-cert.pub
 IdentityFile ${HOME}/.ssh/id_rsa
 User root
 EOL
+fi
 
 # echo "$SSH_KNOWN_HOSTS" | tr -d '\r' > "$SSH_DIR/known_hosts"
 # chmod 644 "$SSH_DIR/known_hosts"
@@ -54,7 +63,7 @@ rm -r wp-content/
 
 rsync -av  "$GITHUB_WORKSPACE/" "$HTDOCS/wp-content/"  > /dev/null
 
-# Symlink uploads directory
+# Remove uploads directory
 cd "$HTDOCS/wp-content/"
 rm -rf uploads
 
