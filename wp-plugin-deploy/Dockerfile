@@ -1,4 +1,4 @@
-FROM rtcamp/ci-deployer:latest
+FROM rtcamp/ci-deployer
 
 LABEL "com.github.actions.name"="WordPress Plugin Deploy"
 LABEL "com.github.actions.description"="Deploy to the WordPress Plugin Repository"
