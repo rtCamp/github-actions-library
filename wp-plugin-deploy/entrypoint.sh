@@ -28,30 +28,36 @@ echo "ℹ︎ SLUG is $SLUG"
 VERSION=${GITHUB_REF#refs/tags/}
 echo "ℹ︎ VERSION is $VERSION"
 
+# Get the files in the latest tag.
 git archive --format=tar --prefix="archive-${VERSION}/" "${VERSION}" | (cd /tmp/ && tar xf -)
 cd "/tmp/archive-${VERSION}/"
 
 # Install composer dependencies
-if [[ !-z "$RUN_COMPOSER" ]]; then
+# Run `composer install`  if composer.json is found.
+if [[ -f "composer.json" ]]; then
   composer install --no-dev --optimize-autoloader
 fi
 
 # Install npm dependencies
-if [[ ! -z "$RUN_NPM" ]]; then
+# Run `npm install` if package.json is found.
+if [[ -f "package.json" ]]; then
   npm install
 fi
 
 # Install project dependencies
+# This is to allow the plugin author to run custom command for asset building process.
 if [[ ! -z "$CUSTOM_COMMAND" ]]; then
   eval "$CUSTOM_COMMAND"
 fi
 
 # Use a custom path inside git repo to be used as root path.
+# Files will be copied from this path to plugin trunk directory.
 if [[ -z "$CUSTOM_PATH" ]]; then
   CUSTOM_PATH='';
 fi
 
 # If EXCLUDE_LIST is provided store them in a file for rsync.
+# This env variable expects a file/folder names to be exclude while doing the rsync command.
 if [[ -z "$EXCLUDE_LIST" ]]; then
   echo $EXCLUDE_LIST | tr " " "\n" >> exclude.txt
 fi
