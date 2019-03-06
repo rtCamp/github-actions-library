@@ -45,3 +45,8 @@ workflow "Deploy" {
      }
    }
 ```
+
+## Credits
+
+* Github action bootstrapped from - [10up/actions-wordpress/dotorg-plugin-deploy](https://github.com/10up/actions-wordpress/tree/master/dotorg-plugin-deploy)
+* Deployment Docker Image - [awhalen/docker-php-composer-node](https://github.com/amwhalen/docker-php-composer-node)  
