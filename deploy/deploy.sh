@@ -78,5 +78,3 @@ fi
 
 cd "$GITHUB_WORKSPACE"
 dep deploy "$GITHUB_BRANCH"
-
-printf "[\e[0;34mNOTICE\e[0m] Deploy successful.\n"
