@@ -12,7 +12,7 @@ GitHub Action                                                                   
 
 ## WordPress Skeleton
 
-All our actions assumes that the GitHub repo for WordPress project follows [our wordpress skeleton repo's](https://github.com/rtCamp/github-actions-wordpress-skeleton) structure.
+All our actions assumes that the GitHub repo for WordPress project follows [our wordpress skeleton repo's](https://github.com/rtCamp/wordpress-skeleton) structure.
 
 ## Usage
 
