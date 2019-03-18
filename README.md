@@ -6,7 +6,7 @@ A collection of [GitHub Actions](https://github.com/features/actions) for runnin
 
 GitHub Action                                                                     | GitHub Action's Purpose
 ----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------
-[WordPress.com VIP Go Code Review](https://github.com/rtCamp/action-vip-go-ci)    | Run PHPCS on code according to VIP coding standard. Based on https://github.com/Automattic/vip-go-ci/.
+[PHP Code Review](https://github.com/rtCamp/action-phpcs)    | Run PHPCS on pull requests.
 [WordPress Deploy](https://github.com/rtCamp/action-wordpress-deploy)           | Deploy a WordPress site using using PHP's Deployer.org
 [Slack Notify](https://github.com/rtCamp/action-slack-notify)                     | Send a notification to a Slack channel
 
