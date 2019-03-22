@@ -18,7 +18,7 @@ All our actions assumes that the GitHub repo for WordPress project follows [our 
 
 * All the three actions can be used individually on projects according the requirements.
 1. For simply running code reviews on pull requests follow steps to [setup PHPCS code inspections](https://github.com/rtCamp/action-vip-go-ci#installation).
-2. To deploy a WordPress repo follow steps to setup [deply action](https://github.com/rtCamp/action-deploy-wordpress#installation).
+2. To deploy a WordPress repo, follow steps in the [Deploy Wordpress Action's README](https://github.com/rtCamp/action-deploy-wordpress#installation).
 3. Send slack notification for success messages or information on any event on GitHub using [slack notification action](https://github.com/rtCamp/action-slack-notify#installation).
 4. A minimal WordPress CI/CD including all these three actions has been setup on a [skeleton repo](https://github.com/rtCamp/github-actions-wordpress-skeleton). You can refer the [main.workflow](https://github.com/rtCamp/github-actions-wordpress-skeleton/blob/master/.github/main.workflow) to see how these three work together.
 
