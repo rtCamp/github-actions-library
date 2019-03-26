@@ -1,23 +1,22 @@
+> **⚠️ Note:** To use this GitHub Action, you must have access to GitHub Actions. GitHub Actions are currently only available in public beta (you must apply for access).
+
 # GitHub Actions Library by rtCamp
 
 A collection of [GitHub Actions](https://github.com/features/actions) created by rtCamp.
 
 This repo itself acts as a placeholder only. We have created a separate repo for each GitHub action to make our actions available via GitHub actions marketplace.
 
-## List of Github Actions
+## List of GitHub Actions
+
+Please go to individual GitHub action to read more about them, including usage instructions. All our GitHub actions can be used individually or combined on projects according the requirements.
+
+A minimal WordPress CI/CD including three actions has been setup on a [skeleton repo](https://github.com/rtCamp/wordpress-skeleton). You can refer the [main.workflow](https://github.com/rtCamp/wordpress-skeleton/blob/master/.github/main.workflow) to see how these work together.
 
 GitHub Action                                                                     | GitHub Action's Purpose
 ----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------
 <img src="https://user-images.githubusercontent.com/8456197/54678910-15ecde80-4b2c-11e9-9bda-149b94951de6.png" height="19px">🕵️‍♂️&nbsp;[PHPCS Code Review](https://github.com/rtCamp/action-phpcs-code-review)    | Run PHPCS on pull requests.
 <img src="https://wordpress.org/favicon.ico" height="19px">🚀&nbsp;[Deploy WordPress](https://github.com/rtCamp/action-deploy-wordpress)           | Deploy a WordPress site using using PHP's Deployer.org
 <img src="https://a.slack-edge.com/cebaa/img/ico/favicon.ico" height="19px">❗&nbsp;[Slack Notify](https://github.com/rtCamp/action-slack-notify)                     | Send a notification to a Slack channel
-
-## Usage
-
-All our GitHub actions can be used individually or combined on projects according the requirements.
-
-A minimal WordPress CI/CD including three actions has been setup on a [skeleton repo](https://github.com/rtCamp/wordpress-skeleton). You can refer the [main.workflow](https://github.com/rtCamp/wordpress-skeleton/blob/master/.github/main.workflow) to see how these three work together.
-
 
 ## Extras
 
