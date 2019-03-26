@@ -1,6 +1,8 @@
 # GitHub Actions Library by rtCamp
 
-A collection of [GitHub Actions](https://github.com/features/actions) for running WordPress deployments.
+A collection of [GitHub Actions](https://github.com/features/actions) created by rtCamp.
+
+This repo itself acts as a placeholder only. We have created a separate repo for each GitHub action to make our actions available via GitHub actions marketplace.
 
 ## List of Github Actions
 
@@ -10,26 +12,29 @@ GitHub Action                                                                   
 <img src="https://wordpress.org/favicon.ico" height="19px">🚀&nbsp;[Deploy WordPress](https://github.com/rtCamp/action-deploy-wordpress)           | Deploy a WordPress site using using PHP's Deployer.org
 <img src="https://a.slack-edge.com/cebaa/img/ico/favicon.ico" height="19px">❗&nbsp;[Slack Notify](https://github.com/rtCamp/action-slack-notify)                     | Send a notification to a Slack channel
 
-## WordPress Skeleton
-
-All our actions assumes that the GitHub repo for WordPress project follows [our wordpress skeleton repo's](https://github.com/rtCamp/wordpress-skeleton) structure.
-
 ## Usage
 
-* All the three actions can be used individually on projects according the requirements.
-1. For simply running code reviews on pull requests follow steps to [setup PHPCS code inspections](https://github.com/rtCamp/action-vip-go-ci#installation).
-2. To deploy a WordPress repo, follow steps in the [Deploy Wordpress Action's README](https://github.com/rtCamp/action-deploy-wordpress#installation).
-3. Send slack notification for success messages or information on any event on GitHub using [slack notification action](https://github.com/rtCamp/action-slack-notify#installation).
-4. A minimal WordPress CI/CD including all these three actions has been setup on a [skeleton repo](https://github.com/rtCamp/github-actions-wordpress-skeleton). You can refer the [main.workflow](https://github.com/rtCamp/github-actions-wordpress-skeleton/blob/master/.github/main.workflow) to see how these three work together.
+All our GitHub actions can be used individually or combined on projects according the requirements.
 
-## Hashicorp Vault
+A minimal WordPress CI/CD including three actions has been setup on a [skeleton repo](https://github.com/rtCamp/wordpress-skeleton). You can refer the [main.workflow](https://github.com/rtCamp/wordpress-skeleton/blob/master/.github/main.workflow) to see how these three work together.
 
-[Hashicorp Vault](https://www.vaultproject.io) integration support has been added in all these actions along with the traditional methods.
 
-The main advantage of using vault is in the [Deploy WordPress](https://github.com/rtCamp/action-deploy-wordpress) action. Because of Vault's [Signed SSH Certificates](https://www.vaultproject.io/docs/secrets/ssh/signed-ssh-certificates.html).
+## Extras
 
-By using Vault's powerful CA capabilities and functionality built into OpenSSH, the deploy action can SSH into target hosts with it's own generated SSH key along with the signed certificate from vault.
+### WordPress Skeleton
 
-In simple terms, if [the following steps](https://github.com/rtCamp/action-deploy-wordpress#vault) have been configured on a server. Then anyone with valid vault access, like our deploy action, will be able to ssh with signed certificates and it's private key will not have to be added everytime in the server's `authorized_keys`.
+We follow "One Site, One Repo" approach for all our WordPress projects.
+You can check [our wordpress skeleton repo here](https://github.com/rtCamp/wordpress-skeleton).
+Some of our actions, such as WordPress Deployer, depends on git repo structure.
 
-For [other actions](https://github.com/rtCamp/action-slack-notify) as well, secrets like `SLACK_WEBHOOK` can be centrally stored and managed using vault.
+### Hashicorp Vault (optional)
+
+If you don't use Vault, you can ignore this part. This is completely optional.
+
+We use [Hashicorp Vault](https://www.vaultproject.io) internally for secrets management. So all our actions support fetching secrets from Hashicorp Vault, in addition to [GitHub secrets](https://developer.github.com/actions/managing-workflows/storing-secrets/).
+
+For some actions such as Slack Notify, Vault may seems redundant. But for other such as [Deploy WordPress](https://github.com/rtCamp/action-deploy-wordpress) action, Vault is time saver. 
+
+GitHub doesn't support organization wide secrets. So with GitHub secrets, we need to duplicate many secrets, such as dev/test server SSH keys, across multiple repos.
+
+Using Vault, we reduce this effort to setup Vault's token in GitHub secrets. Further, Vault policies help us enforce fine grain control.
