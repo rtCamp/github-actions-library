@@ -37,3 +37,8 @@ For some actions such as Slack Notify, Vault may seems redundant. But for other 
 GitHub doesn't support organization wide secrets. So with GitHub secrets, we need to duplicate many secrets, such as dev/test server SSH keys, across multiple repos.
 
 Using Vault, we reduce this effort to setup Vault's token in GitHub secrets. Further, Vault policies help us enforce fine grain control.
+
+
+## Does this interest you?
+
+<a href="https://rtcamp.com/"><img src="https://rtcamp.com/wp-content/uploads/2019/04/github-banner@2x.png" alt="Join us at rtCamp, we specialize in providing high performance enterprise WordPress solutions"></a>
