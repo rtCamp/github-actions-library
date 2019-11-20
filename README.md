@@ -1,5 +1,3 @@
-> **⚠️ Note:** To use this GitHub Action, you must have access to GitHub Actions. GitHub Actions are currently only available in public beta (you must apply for access).
-
 # GitHub Actions Library by rtCamp
 
 A collection of [GitHub Actions](https://github.com/features/actions) created by rtCamp.
