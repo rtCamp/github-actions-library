@@ -1,5 +1,8 @@
 # GitHub Actions Library by rtCamp
 
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+
+
 A collection of [GitHub Actions](https://github.com/features/actions) created by rtCamp.
 
 This repo itself acts as a placeholder only. We have created a separate repo for each GitHub action to make our actions available via GitHub actions marketplace.
