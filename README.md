@@ -11,7 +11,7 @@ This repo itself acts as a placeholder only. We have created a separate repo for
 
 Please go to individual GitHub action to read more about them, including usage instructions. All our GitHub actions can be used individually or combined on projects according the requirements.
 
-A minimal WordPress CI/CD including three actions has been setup on a [skeleton repo](https://github.com/rtCamp/wordpress-skeleton). You can refer the [main.workflow](https://github.com/rtCamp/wordpress-skeleton/blob/master/.github/main.workflow) to see how these work together.
+A minimal WordPress CI/CD including three actions has been setup on a [skeleton repo](https://github.com/rtCamp/wordpress-skeleton).
 
 GitHub Action                                                                     | GitHub Action's Purpose
 ----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------
