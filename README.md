@@ -39,6 +39,10 @@ GitHub doesn't support organization wide secrets. So with GitHub secrets, we nee
 
 Using Vault, we reduce this effort to setup Vault's token in GitHub secrets. Further, Vault policies help us enforce fine grain control.
 
+## WP Core and Plugins Auto-Update Reporting
+
+**PM:** [sohel.mistry@rtcamp.com](mailto:sohel.mistry@rtcamp.com)  
+**Devs:** [abhishek.kumar@rtcamp.com](mailto:abhishek.kumar@rtcamp.com)
 
 ## Does this interest you?
 
